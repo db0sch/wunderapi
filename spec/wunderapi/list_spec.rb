@@ -1,20 +1,28 @@
 require "spec_helper"
 
 describe Wunderapi::List do
-  attributes = {
-    title: "Shopping",
-    id: 189898,
-    owner_type: "user",
-    owner_id: "4023989887",
-    list_type: "list",
-    public: false,
-    revision: 1,
-    created_at: "2017-01-08T07:58:26.556Z",
-    type: "list"
+  let(:api) {
+    Wunderapi::Api.new({
+      access_token: ENV['ACCESS_TOKEN'],
+      client_id: ENV['CLIENT_ID']
+      })
   }
 
   subject {
-    described_class.new(attributes)
+    described_class.new(
+      {
+        title: "Shopping",
+        id: 189898,
+        owner_type: "user",
+        owner_id: "4023989887",
+        list_type: "list",
+        public: false,
+        revision: 1,
+        created_at: "2017-01-08T07:58:26.556Z",
+        type: "list",
+        api: api
+      }
+    )
   }
 
   it "has a title" do
@@ -52,5 +60,9 @@ describe Wunderapi::List do
 
   it 'has a type' do
     expect(subject.type).to eq('list')
+  end
+
+  it 'has an api instance' do
+    expect(subject.api).to be_an_instance_of(Wunderapi::Api)
   end
 end

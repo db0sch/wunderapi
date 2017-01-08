@@ -2,7 +2,7 @@ module Wunderapi
   class List
 
     attr_reader :uid, :owner_type, :owner_id, :list_type, :revision, :created_at, :type
-    attr_accessor :title, :public
+    attr_accessor :title, :public, :api
 
     def initialize(attributes = {})
       @type = attributes[:type]
@@ -14,6 +14,7 @@ module Wunderapi
       @public = attributes[:public]
       @revision = attributes[:revision]
       @created_at = attributes[:created_at]
+      @api = attributes[:api]
     end
 
   end
