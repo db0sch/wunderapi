@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dimitri Bosch"]
   spec.email         = ["dimitribosch@hotmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{a wunderlist api gem}
+  spec.description   = %q{Let you app interact easily with the Wunderlist public API}
+  spec.homepage      = "https://github.com/db0sch/wunderapi"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
