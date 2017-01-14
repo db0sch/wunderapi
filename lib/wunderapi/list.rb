@@ -20,16 +20,16 @@ module Wunderapi
     end
 
     def set_attrs(attrs = {})
-      self.api ||= attrs['api']
-      self.id = attrs['id']
-      self.type = attrs['type']
-      self.owner_type = attrs['owner_type']
-      self.owner_id = attrs['owner_id']
-      self.list_type = attrs['list_type']
-      self.public = attrs['public']
-      self.title = attrs['title']
-      self.created_at = attrs['created_at']
-      self.revision = attrs['revision']
+      self.api ||= attrs[:api]
+      self.id = attrs[:id]
+      self.type = attrs[:type]
+      self.owner_type = attrs[:owner_type]
+      self.owner_id = attrs[:owner_id]
+      self.list_type = attrs[:list_type]
+      self.public = attrs[:public]
+      self.title = attrs[:title]
+      self.created_at = attrs[:created_at]
+      self.revision = attrs[:revision]
     end
   end
 end
