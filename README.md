@@ -24,6 +24,21 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Testing
+
+Framework: Rspec (gem `rspec-rails`)
+
+run:
+```
+bundle exec rspec
+```
+
+you can even be more specific, to run only a specific test scope:
+```sh
+bundle exec rspec spec/models...
+# you just need to target the specific test file you want to run
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -38,4 +53,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

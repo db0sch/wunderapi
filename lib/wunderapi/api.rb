@@ -1,6 +1,6 @@
 require "wunderapi/request"
-require "wunderapi/list"
 require "wunderapi/helper"
+require "wunderapi/list"
 
 module Wunderapi
   class Api
@@ -30,14 +30,16 @@ module Wunderapi
     def list_with_id(id)
       result = call :get, "api/v1/lists/#{id}"
       return nil if result['error']
-      p result
       list = Wunderapi::List.new(result.symbolize_keys)
       list.api = self
       list
     end
 
-
-    private
+    def new_list(title)
+      list = Wunderapi::List.new(title: title)
+      list.api = self
+      list
+    end
 
     def call(method, url, options = {})
       case method
@@ -49,5 +51,4 @@ module Wunderapi
     end
 
   end
-
 end

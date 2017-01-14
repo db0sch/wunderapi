@@ -31,8 +31,15 @@ describe Wunderapi::Api do
   end
 
   it 'can return a list by the id' do
-    id = subject.lists.first.uid
+    id = subject.lists.first.id
     list = subject.list_with_id(id)
     expect(list).to be_an_instance_of(Wunderapi::List)
   end
+
+  it 'can create a new list' do
+    list = subject.new_list("this is a list title")
+    expect(list).to be_an_instance_of Wunderapi::List
+    expect(list.title).to be_an_instance_of String
+  end
+
 end
