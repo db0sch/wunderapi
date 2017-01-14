@@ -25,44 +25,90 @@ describe Wunderapi::List do
     )
   }
 
-  it "has a title" do
-    expect(subject.title).to be_a String
+  context "attributes" do
+
+    it "has a title" do
+      expect(subject.title).to be_a String
+    end
+
+    it "has an id" do
+      expect(subject.id).to be_an Integer
+    end
+
+    it 'has a owner type' do
+      expect(subject.owner_type).to be_an_instance_of(String)
+    end
+
+    it 'has a owner id' do
+      expect(subject.owner_id).to be_an Integer
+    end
+
+    it 'has a list_type' do
+      expect(subject.list_type).to be_a String
+    end
+
+    it 'has a public attributes' do
+      boolean = true if (subject.public == true) || (subject.public == false)
+      expect(boolean).to be true
+    end
+
+    it 'has a revision number' do
+      expect(subject.revision).to be_a Integer
+    end
+
+    it 'has a creation date' do
+      expect(subject.created_at).to be_a String
+    end
+
+    it 'has a type' do
+      expect(subject.type).to eq('list')
+    end
+
+    it 'has an api instance' do
+      expect(subject.api).to be_an_instance_of(Wunderapi::Api)
+    end
   end
 
-  it "has an id" do
-    expect(subject.uid).to be_an Integer
-  end
+  context "action" do
+    subject {
+      list = api.new_list("this is my new list title")
+      list.save
+      list
+    }
 
-  it 'has a owner type' do
-    expect(subject.owner_type).to be_an_instance_of(String)
-  end
+    it 'can be saved to wunderlist' do
+      expect(subject.id).to_not be nil
+    end
 
-  it 'has a owner id' do
-    expect(subject.owner_id).to be_an Integer
-  end
+    it 'can be updated to wunderlist' do
+      previous_revision = subject.revision
+      new_title = "The great new title"
+      subject.title = new_title
+      subject.save
+      expect(subject.revision).to be > previous_revision
+      expect(subject.title).to eq(new_title)
+    end
 
-  it 'has a list_type' do
-    expect(subject.list_type).to be_a String
-  end
+    it 'cannot update anything to wunderlist' do
+      subject.type = "task"
+      subject.owner_type = "donald"
+      subject.save
+      expect(subject.type).to eq("list")
+      expect(subject.owner_type).to eq("user")
+    end
 
-  it 'has a public attributes' do
-    boolean = true if (subject.public == true) || (subject.public == false)
-    expect(boolean).to be true
-  end
+    it 'cannont update the revision number' do
+      previous_revision = subject.revision
+      subject.revision = 42
+      expect {subject.save}.to raise_error("There is a conflict with the given data.: revision_conflict")
+    end
 
-  it 'has a revision number' do
-    expect(subject.revision).to be_a Integer
-  end
-
-  it 'has a creation date' do
-    expect(subject.created_at).to be_a String
-  end
-
-  it 'has a type' do
-    expect(subject.type).to eq('list')
-  end
-
-  it 'has an api instance' do
-    expect(subject.api).to be_an_instance_of(Wunderapi::Api)
+    it 'can be destroyed on Wunderlist' do
+      id = subject.id
+      subject.destroy
+      expect(subject.id).to be nil
+      result = api.list_with_id(id)
+      expect(result).to be nil
+    end
   end
 end
