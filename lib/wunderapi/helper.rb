@@ -27,7 +27,7 @@ module Wunderapi
         res = self.update
       end
       raise "#{res["error"]["message"]}: #{res["error"].key(true)}" if res["error"]
-      set_attrs(res)
+      set_attrs(res.symbolize_keys)
     end
 
     def destroy
