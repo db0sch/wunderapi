@@ -38,6 +38,12 @@ module Wunderapi
       api.task list_id: self.id, task_id: id
     end
 
+    def new_task(attributes = {})
+      attributes[:list_id] = self.id
+      attributes[:api] = self.api
+      Task.new(attributes)
+    end
+
     def set_attrs(attrs = {})
       self.api ||= attrs[:api]
       self.id = attrs[:id]

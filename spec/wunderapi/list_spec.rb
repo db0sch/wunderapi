@@ -116,10 +116,21 @@ describe Wunderapi::List do
     end
 
     it 'can get all its tasks from Wunderlist' do
-      task = Wunderapi::Task.new(title: "This is a test task", list_id: subject.id, api: subject.api)
+      task = subject.new_task(title: "This is a test task")
       task.save
       tasks = subject.tasks
       expect(tasks.first).to be_an_instance_of Wunderapi::Task
     end
+
+    it "can create a new task" do
+      title = "This is my new task"
+      task = subject.new_task(title: title)
+      task.save
+      tasks = subject.tasks
+      result = tasks.select { |t| t.id == task.id }.first
+      expect(result.title).to eq(title)
+    end
+
+    
   end
 end
