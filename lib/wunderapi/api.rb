@@ -1,6 +1,7 @@
 require "wunderapi/request"
 require "wunderapi/helper"
 require "wunderapi/list"
+require "wunderapi/task"
 
 module Wunderapi
   class Api
@@ -39,6 +40,13 @@ module Wunderapi
       list = Wunderapi::List.new(title: title)
       list.api = self
       list
+    end
+
+    def new_task(attributes = {})
+      # if no list is specified, put the task in inbox (what's id of inbox?)
+      task = Wunderapi::Task.new(attributes)
+      task.api = self
+      task
     end
 
     def call(method, url, options = {})

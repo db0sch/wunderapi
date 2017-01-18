@@ -19,6 +19,8 @@ module Wunderapi
       @api = attributes[:api]
     end
 
+
+
     def set_attrs(attrs = {})
       self.api ||= attrs[:api]
       self.id = attrs[:id]
