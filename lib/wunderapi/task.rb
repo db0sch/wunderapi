@@ -3,7 +3,10 @@ require "wunderapi/helper"
 module Wunderapi
   class Task
 
-    attr_accessor :id, :title, :list_id
+    include Wunderapi::Helper
+
+    attr_accessor :id, :title, :list_id, :api, :assignee_id, :created_at, :created_by_id
+    attr_accessor :due_date, :revision, :starred, :completed_at, :completed_by_id
 
     def initialize(attributes = {})
       @id = attributes[:id]
@@ -17,6 +20,24 @@ module Wunderapi
       @title = attributes[:title]
       @completed_at = attributes[:completed_at]
       @completed_by_id = attributes[:completed_by_id]
+      @api = attributes[:api]
+      raise ArgumentError, 'list_id cannot be nil' unless @list_id
+      raise ArgumentError, 'title cannot be nil' unless @title
+    end
+
+    def set_attrs(attrs = {})
+      self.api ||= attrs[:api]
+      self.id = attrs[:id]
+      self.assignee_id = attrs[:assignee_id]
+      self.created_at = attrs[:created_at]
+      self.created_by_id = attrs[:created_by_id]
+      self.due_date = attrs[:due_date]
+      self.list_id = attrs[:list_id]
+      self.revision = attrs[:revision]
+      self.starred = attrs[:starred]
+      self.title = attrs[:title]
+      self.completed_at = attrs[:completed_at]
+      self.completed_by_id = attrs[:completed_by_id]
     end
 
   end

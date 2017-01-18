@@ -1,4 +1,6 @@
+require "wunderapi/request"
 require "wunderapi/helper"
+
 module Wunderapi
   class List
 
@@ -17,9 +19,20 @@ module Wunderapi
       @revision = attributes[:revision]
       @created_at = attributes[:created_at]
       @api = attributes[:api]
+      raise ArgumentError, 'title cannot be nil' unless @title
     end
 
-
+    def tasks
+      result = api.call :get, 'api/v1/tasks', list_id: self.id, completed: false
+      tasks = []
+      result.each do |hash_task|
+        attributes = hash_task.symbolize_keys
+        attributes[:api] = self
+        task = Task.new(attributes)
+        tasks << task
+      end
+      tasks
+    end
 
     def set_attrs(attrs = {})
       self.api ||= attrs[:api]
