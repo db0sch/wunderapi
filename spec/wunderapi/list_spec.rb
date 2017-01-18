@@ -31,6 +31,10 @@ describe Wunderapi::List do
       expect(subject.title).to be_a String
     end
 
+    it "raise an error if no title" do
+      expect { described_class.new(title:nil) }.to raise_error("title cannot be nil")
+    end
+
     it "has an id" do
       expect(subject.id).to be_an Integer
     end
@@ -109,6 +113,34 @@ describe Wunderapi::List do
       expect(subject.id).to be nil
       result = api.list_with_id(id)
       expect(result).to be nil
+    end
+
+    it 'can get all its tasks from Wunderlist' do
+      task = subject.new_task(title: "This is a test task")
+      task.save
+      tasks = subject.tasks
+      expect(tasks.first).to be_an_instance_of Wunderapi::Task
+    end
+
+    it "can create a new task" do
+      title = "This is my new task"
+      task = subject.new_task(title: title)
+      task.save
+      tasks = subject.tasks
+      result = tasks.any? { |t| t.id == task.id }
+      expect(result).to be true
+    end
+
+    it 'can get different arrays of tasks' do
+      task1 = subject.new_task(title: "task #1")
+      task1.save
+      task2 = subject.new_task(title: "task #2")
+      task2.completed!
+      task2.save
+      result_tasks = subject.tasks.none?(&:completed?)
+      result_completed_tasks = subject.completed_tasks.all?(&:completed?)
+      expect(result_tasks).to be true
+      expect(result_completed_tasks).to be true
     end
   end
 end

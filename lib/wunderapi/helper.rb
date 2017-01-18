@@ -11,8 +11,6 @@ module Wunderapi
     end
 
     def update
-      p resource_path
-      p self.to_hash
       self.api.call :put, resource_path, self.to_hash
     end
 
