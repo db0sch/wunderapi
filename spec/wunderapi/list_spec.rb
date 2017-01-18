@@ -127,10 +127,20 @@ describe Wunderapi::List do
       task = subject.new_task(title: title)
       task.save
       tasks = subject.tasks
-      result = tasks.select { |t| t.id == task.id }.first
-      expect(result.title).to eq(title)
+      result = tasks.any? { |t| t.id == task.id }
+      expect(result).to be true
     end
 
-    
+    it 'can get different arrays of tasks' do
+      task1 = subject.new_task(title: "task #1")
+      task1.save
+      task2 = subject.new_task(title: "task #2")
+      task2.completed!
+      task2.save
+      result_tasks = subject.tasks.none?(&:completed?)
+      result_completed_tasks = subject.completed_tasks.all?(&:completed?)
+      expect(result_tasks).to be true
+      expect(result_completed_tasks).to be true
+    end
   end
 end

@@ -26,12 +26,14 @@ module Wunderapi
       api.tasks list_id: self.id, completed: attributes[:completed]
     end
 
-    def all_task
-      api.tasks list_id: self.id
+    def all_tasks
+      uncompleted = api.tasks list_id: self.id
+      completed = api.tasks(list_id: self.id, completed: true, hehe:"hello")
+      uncompleted + completed
     end
 
     def completed_tasks
-      tasks completed: true
+      api.tasks(list_id: self.id, completed: true, cochon: "gros cochon")
     end
 
     def task(id)
