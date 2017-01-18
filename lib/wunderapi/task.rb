@@ -18,11 +18,40 @@ module Wunderapi
       @revision = attributes[:revision]
       @starred = attributes[:starred]
       @title = attributes[:title]
+      @completed = attributes[:completed_at] ? true : false
       @completed_at = attributes[:completed_at]
       @completed_by_id = attributes[:completed_by_id]
       @api = attributes[:api]
       raise ArgumentError, 'list_id cannot be nil' unless @list_id
       raise ArgumentError, 'title cannot be nil' unless @title
+    end
+
+    def completed!(attributes = {})
+      @completed = true
+    end
+
+    def completed?
+      @completed
+    end
+
+    def uncompleted!
+      @completed = false
+    end
+
+    def uncompleted?
+      !@completed
+    end
+
+    def starred!
+      @starred = true
+    end
+
+    def starred?
+      @starred
+    end
+
+    def unstarred!
+      @starred = false
     end
 
     def set_attrs(attrs = {})

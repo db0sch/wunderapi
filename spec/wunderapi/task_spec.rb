@@ -76,31 +76,41 @@ describe Wunderapi::Task do
       id = subject.id
       subject.destroy
       expect(subject.id).to be nil
-      # try to get the task with the id and check something like this.
-      # result = api.list_with_id(id)
-      # expect(result).to be nil
+      task = list.task(id)
+      expect(task).to be nil
     end
 
     it 'can be completed' do
-      # subject.completed_at # find the right time format
-      # subject.save
-      # get the task by id
-      # check if completed
+      subject.completed!
+      subject.save
+      task = list.task(subject.id)
+      expect(task.completed?).to be true
     end
 
     it 'can be uncompleted' do
-      # subject.completed_at
-      # subject.save
-      # subject.completed_at = nil
-      
-    end
-
-    it 'can have a due date' do
-
+      subject.completed!
+      subject.save
+      task = list.task(subject.id)
+      expect(task.completed?).to be true
+      subject.uncompleted!
+      subject.save
+      task = list.task(subject.id)
+      expect(task.completed?).to be false
     end
 
     it 'can be starred' do
+      subject.starred!
+      subject.save
+      expect(subject.starred?).to be true
+    end
 
+    it 'can be unstarred' do
+      subject.starred!
+      subject.save
+      expect(subject.starred?).to be true
+      subject.unstarred!
+      subject.save
+      expect(subject.starred?).to be false
     end
 
   end

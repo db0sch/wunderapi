@@ -49,6 +49,33 @@ module Wunderapi
       task
     end
 
+    def tasks(attributes = {})
+      raise ArgumentError, 'list_id cannot be nil' unless attributes[:list_id]
+      attributes[:completed] ||= false
+      result = call :get, 'api/v1/tasks', list_id: attributes[:list_id], completed: attributes[:completed]
+      tasks = []
+      result.each do |hash_task|
+        attributes = hash_task.symbolize_keys
+        attributes[:api] = self
+        task = Task.new(attributes)
+        tasks << task
+      end
+      tasks
+    end
+
+    def task(attributes = {})
+      raise ArgumentError, 'id cannot be nil' unless attributes[:task_id]
+      list_id = { list_id: attributes[:list_id] }
+      result = call :get, "api/v1/tasks/#{attributes[:task_id].to_s}", list_id if attributes[:list_id]
+      unless result['error']
+        task = Task.new(result.symbolize_keys)
+        task.api = self
+        return task
+      else
+        return nil
+      end
+    end
+
     def call(method, url, options = {})
       case method
       when :get then @request.get(url, options)

@@ -22,16 +22,20 @@ module Wunderapi
       raise ArgumentError, 'title cannot be nil' unless @title
     end
 
-    def tasks
-      result = api.call :get, 'api/v1/tasks', list_id: self.id, completed: false
-      tasks = []
-      result.each do |hash_task|
-        attributes = hash_task.symbolize_keys
-        attributes[:api] = self
-        task = Task.new(attributes)
-        tasks << task
-      end
-      tasks
+    def tasks(attributes = {completed: false})
+      api.tasks list_id: self.id, completed: attributes[:completed]
+    end
+
+    def all_task
+      api.tasks list_id: self.id
+    end
+
+    def completed_tasks
+      tasks completed: true
+    end
+
+    def task(id)
+      api.task list_id: self.id, task_id: id
     end
 
     def set_attrs(attrs = {})
